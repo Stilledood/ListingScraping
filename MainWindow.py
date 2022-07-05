@@ -6,6 +6,9 @@ from PyQt5.QtGui import QPalette,QColor,QFont
 from PyQt5.QtCore import Qt
 import os
 
+import scraping
+from scraping import Scrapping
+
 
 
 class MainWindow(QMainWindow):
@@ -20,11 +23,27 @@ class MainWindow(QMainWindow):
 
     def browse_file(self):
         self.folderpath=QtWidgets.QFileDialog.getExistingDirectory(self)
-        if len(self.folderpath) > 0 and len(self.search_words.text()) > 0:
+
+
+        if len(self.folderpath) > 0 and len(self.search_words.text()) > 0 and len(self.page_number.text()) > 0:
             self.run_button.setEnabled(True)
+
+    def strat_scrapping(self):
+        print(self.search_words.text())
+        print(int(self.page_number.text()))
+        print(self.folderpath)
+        print(self.custom_name.text())
+        scr=Scrapping(name='scraping')
+        print(scr.name)
+
+        scr.scrapping(self.search_words.text(),int(self.page_number.text()),self.folderpath,self.custom_name.text())
+
+
+
 
     def SetupUi(self):
 
+        self.path=''
         self.search_words = QLineEdit(self)
 
         self.search_words.resize(200,30)
@@ -95,6 +114,10 @@ class MainWindow(QMainWindow):
         self.run_button.resize(100,30)
         self.run_button.move(200,350)
         self.run_button.setEnabled(False)
+
+        self.run_button.clicked.connect(self.strat_scrapping)
+
+
 
 
 
